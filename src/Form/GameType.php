@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Boutique;
 use App\Entity\Game;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,8 +17,36 @@ class GameType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('equipeA')
-            ->add('equipeB')
+        ->add('equipeA', ChoiceType::class, [
+            'choices' => [
+                'EST' => 'EST',
+                'ESS' => 'ESS',
+                'CA' => 'CA',
+                'CSS' => 'CSS',
+                'USM' => 'USM',
+                'ASS' => 'ASS',
+                'ST' => 'ST',
+               
+            ],
+            'placeholder' => 'Choose an option',
+            'required' => true,
+            'data' => 'ESS', // add a default value here
+        ])
+        ->add('equipeB', ChoiceType::class, [
+            'choices' => [
+                'EST' => 'EST',
+                'ESS' => 'ESS',
+                'CA' => 'CA',
+                'CSS' => 'CSS',
+                'USM' => 'USM',
+                'ASS' => 'ASS',
+                'ST' => 'ST',
+               
+            ],
+            'placeholder' => 'Choose an option',
+            'required' => true,
+            'data' => 'ESS', // add a default value here
+        ])
             ->add('prix')
             ->add('image', FileType::class, [
                 'label' => 'L image de game ',
