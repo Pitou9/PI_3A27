@@ -1,0 +1,94 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}Reservation index
+{% endblock %}
+
+{% block body %}
+	<div class="page-title-area">
+		<div class="container">
+			<div class="page-title-content">
+				<h2>Reservation</h2>
+				<ul>
+					<li>
+						<a href="index.html">Home</a>
+					</li>
+					<li>Reservation</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<section class="cart-area ptb-100">
+		<div class="container">
+			<div class="cart-table table-responsive">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th scope="col">Product</th>
+							<th scope="col">Name</th>
+							<th scope="col">Unit Price</th>
+							<th scope="col"></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for game in games %}
+							<tr>
+								<td class="product-thumbnail">
+									<a href="#">
+										<img src="{{ asset('uploads/brochures/' ~ game.image) }}" alt="image"/>
+									</a>
+								</td>
+								<td class="product-name">
+									<a href="#">{{ game.equipeA }}
+										vs
+										{{ game.equipeB }}</a>
+								</td>
+								<td class="product-price">
+									<span class="unit-amount">{{ game.prix }}</span>
+								</td>
+
+								<td class="product-subtotal">
+									<button class="default-btn reserve-btn" data-game-id="{{ game.id }}">Reserver</button>
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="5">No records found</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () { // Add event listener to the reservation buttons
+const reserveButtons = document.querySelectorAll('.reserve-btn');
+reserveButtons.forEach(function (button) {
+button.addEventListener('click', function (event) {
+event.preventDefault();
+const gameId = button.getAttribute('data-game-id');
+establishReservation(gameId);
+});
+});
+
+// Function to establish reservation via AJAX
+function establishReservation(gameId) { // AJAX request to establish reservation
+const xhr = new XMLHttpRequest();
+xhr.open('POST', '{{ path('app_reservation_establish') }}', true);
+xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+xhr.onreadystatechange = function () {
+if (xhr.readyState === XMLHttpRequest.DONE) {
+if (xhr.status === 200) { // Reservation successfully established, handle success
+alert('Reservation successfully established!');
+} else { // Error occurred, handle error
+alert('Error occurred while establishing reservation!');
+}
+}
+};
+xhr.send('game_id=' + encodeURIComponent(gameId));
+}
+});
+	</script>
+{% endblock %}
